@@ -75,10 +75,18 @@ export const PopularItem: React.FC<Props> = ({dish}) => {
         }}
       >
         <h4
+          className="number-of-lines-2"
           style={{
             marginBottom: 2,
             textTransform: 'capitalize',
             ...constants.typography.h4,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            lineHeight: 1.25,
+            maxHeight: '2.5em',
           }}
         >
           {dish.name}
