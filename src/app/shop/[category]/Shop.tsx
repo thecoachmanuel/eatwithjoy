@@ -5,6 +5,7 @@ import {useParams} from 'next/navigation';
 
 import {hooks} from '@/hooks';
 import {items} from '@/items';
+import {svg} from '@/assets/svg';
 import {DishType} from '@/types';
 import {constants} from '@/constants';
 import {components} from '@/components';
@@ -15,7 +16,7 @@ export const Shop: React.FC = () => {
     ? decodeURIComponent(params.category as string)
     : 'all';
   const [searchQuery, setSearchQuery] = useState('');
-  const searchInputRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const {dishes: data, loading} = hooks.useGetDishes();
 
   const [isMobile, setIsMobile] = useState(false);
@@ -48,15 +49,18 @@ export const Shop: React.FC = () => {
     }
 
     if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
       return filtered.filter(
         (dish: DishType) =>
-          dish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          dish.description?.toLowerCase().includes(searchQuery.toLowerCase())
+          dish.name.toLowerCase().includes(q) ||
+          dish.description?.toLowerCase().includes(q) ||
+          dish.category?.toLowerCase().includes(q) ||
+          dish.ingredients?.some((ing: string) => ing.toLowerCase().includes(q))
       );
     }
 
     return filtered;
-  }, [data, searchQuery]);
+  }, [data, searchQuery, category]);
 
   if (loading) return <components.Loader />;
 
@@ -68,8 +72,7 @@ export const Shop: React.FC = () => {
 
   const renderSearch = () => {
     return (
-      <button
-        ref={searchInputRef}
+      <div
         style={{
           backgroundColor: constants.colors.whiteColor,
           width: '100%',
@@ -77,8 +80,8 @@ export const Shop: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           height: 50,
-          paddingLeft: 20,
-          cursor: 'pointer',
+          paddingLeft: 16,
+          paddingRight: 16,
           position: 'fixed',
           top: constants.sizes.headerHeight + 10,
           zIndex: 10000,
@@ -87,48 +90,62 @@ export const Shop: React.FC = () => {
           maxWidth: isMobile
             ? 'calc(100% - 40px)'
             : constants.sizes.screenWidth - 40,
+          boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.05)',
+          border: '1px solid #ECECEC',
         }}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          const result = window.prompt('Enter your search query', searchQuery);
-          if (result !== null) {
-            setSearchQuery(result);
-          }
-        }}
-        type="button"
       >
-        <span
+        <div
           style={{
-            fontSize: 14,
-            lineHeight: 1.5,
-            marginRight: 'auto',
-            paddingRight: 20,
-            color: searchQuery
-              ? constants.colors.mainDarkColor
-              : constants.colors.textColor,
+            marginRight: 10,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
           }}
         >
-          {searchQuery || 'Search dishes...'}
-        </span>
-        {/* clear text */}
+          <svg.SearchSvg color="#7D849A" />
+        </div>
+        <input
+          ref={searchInputRef}
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search dishes by name or ingredients..."
+          style={{
+            border: 'none',
+            outline: 'none',
+            backgroundColor: 'transparent',
+            width: '100%',
+            height: '100%',
+            fontSize: 14,
+            fontFamily: 'Mulish, sans-serif',
+            color: constants.colors.mainDarkColor,
+          }}
+        />
         {searchQuery && (
-          <div
+          <button
+            type="button"
             style={{
-              position: 'absolute',
-              right: 20,
+              background: 'none',
+              border: 'none',
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 6,
+              marginLeft: 6,
+              flexShrink: 0,
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
+            onClick={() => {
               setSearchQuery('');
+              searchInputRef.current?.focus();
             }}
+            aria-label="Clear search"
           >
-            <span>clear</span>
-          </div>
+            <svg.CrossSvg />
+          </button>
         )}
-      </button>
+      </div>
     );
   };
 
@@ -162,27 +179,41 @@ export const Shop: React.FC = () => {
   };
 
   const renderIfEmpty = () => {
-    if (filteredDishes.length > 0 || !searchQuery.trim()) {
+    if (filteredDishes.length > 0) {
       return null;
     }
     return (
-      <main style={{marginTop: marginTop, width: '100%', height: '100%'}}>
-        {filteredDishes.length === 0 && searchQuery.trim() && (
-          <div
-            style={{
-              textAlign: 'center',
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <span style={{fontSize: 16, color: '#666'}}>
-              No dishes found for &quot;{searchQuery}&quot;
-            </span>
-          </div>
-        )}
+      <main
+        style={{
+          marginTop: marginTop,
+          width: '100%',
+          height: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20,
+          textAlign: 'center',
+        }}
+      >
+        <div style={{marginBottom: 16}}>
+          <svg.SearchSvg color="#C0C5D2" />
+        </div>
+        <h4 style={{...constants.typography.h4, marginBottom: 8}}>
+          No dishes found
+        </h4>
+        <p
+          style={{
+            fontSize: 14,
+            color: constants.colors.textColor,
+            maxWidth: 280,
+            lineHeight: 1.5,
+          }}
+        >
+          {searchQuery.trim()
+            ? `We couldn't find any dishes matching "${searchQuery}". Try searching with another ingredient or keyword.`
+            : 'No dishes are available in this category at the moment.'}
+        </p>
       </main>
     );
   };
