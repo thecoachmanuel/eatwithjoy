@@ -1,0 +1,31 @@
+{
+  "promocodes": [
+    {
+      "id": 1,
+      "name": "Ibadan Foodie Welcome Promo",
+      "code": "NAIJAJOY20",
+      "discount": 20,
+      "expiresAt": "2026-12-31",
+      "isActive": true,
+      "logo": "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=150&q=80"
+    },
+    {
+      "id": 2,
+      "name": "Weekend Jollof Discount",
+      "code": "JOLLOF50",
+      "discount": 50,
+      "expiresAt": "2026-12-31",
+      "isActive": true,
+      "logo": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=150&q=80"
+    },
+    {
+      "id": 3,
+      "name": "Suya Night Special",
+      "code": "SUYA30",
+      "discount": 30,
+      "expiresAt": "2026-12-31",
+      "isActive": true,
+      "logo": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=150&q=80"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "offers": [
+    {
+      "id": 1,
+      "title": "Smoky Party Jollof Rice & Peppered Chicken",
+      "dishId": 1,
+      "image": "/offers/01.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Egusi Soup with Pounded Yam & Assorted Meat",
+      "dishId": 2,
+      "image": "/offers/02.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Spicy Beef Suya with Onions & Tomatoes",
+      "dishId": 7,
+      "image": "/offers/03.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Moi Moi Elegusi with Boiled Egg & Flaked Fish",
+      "dishId": 11,
+      "image": "/offers/04.jpg"
+    }
+  ]
+}
