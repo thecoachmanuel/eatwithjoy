@@ -1,13 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useRouter} from 'next/navigation';
 
 import {constants} from '@/constants';
 import {components} from '@/components';
+import {useAppDispatch} from '@/lib/store';
+import {cartActions} from '@/lib/cartSlice';
 
 export const OrderSuccess: React.FC = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(cartActions.resetCart());
+  }, [dispatch]);
 
   const renderContent = () => {
     return (

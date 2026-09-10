@@ -6,12 +6,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import {hooks} from '@/hooks';
 import {constants} from '@/constants';
 import {components} from '@/components';
+import {useAppDispatch} from '@/lib/store';
+import {cartActions} from '@/lib/cartSlice';
 
 export const Checkout: React.FC = () => {
   hooks.useThemeColor('#EEF3FC');
   hooks.useBodyColor('#EEF3FC');
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [buttonSectionHeight, setButtonSectionHeight] = useState(0);
 
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -32,6 +35,7 @@ export const Checkout: React.FC = () => {
   });
 
   const handlePlaceOrder = () => {
+    dispatch(cartActions.resetCart());
     router.push(constants.routes.OrderSuccess);
   };
 
