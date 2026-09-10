@@ -65,7 +65,7 @@ const onboarding = [
   {
     id: 1,
     image: 'https://george-fx.github.io/yummer-data/onboarding/01.png',
-    title: 'Welcome to Eat with Joy!',
+    title: 'Welcome to EatwithJoy!',
     description: 'Browse our delicious menu and find the perfect meal for you.',
   },
   {
